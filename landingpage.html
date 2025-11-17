@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AigisPay - The Open Payment Trust Layer for P2P Trade</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at center, #00040f, #000010 80%, #000000 100%);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        header {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-weight: 900;
+            font-size: 1.5rem;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            z-index: 10;
+        }
+
+        main h2 {
+            font-weight: 600;
+            font-size: 3rem;
+            color: #fff;
+            text-align: center;
+            max-width: 90%;
+            z-index: 10;
+            position: relative;
+        }
+
+        canvas#binaryCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            background: transparent;
+        }
+
+        canvas#raysCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        canvas#neuronsCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -3;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 10px;
+            font-size: 0.875rem;
+            color: #888888;
+            font-weight: 600;
+            z-index: 10;
+        }
+        /* Additional styles for cool flowing rays */
+    </style>
+</head>
+<body>
+    <header style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 700; letter-spacing: 1px;">
+        AigisPay
+    </header>
+    <main>
+        <h2 style="white-space: nowrap;">The Open Payment Trust Layer for P2P Trade</h2>
+        <p style="color: #ccc; font-weight: 400; font-size: 1.25rem; margin-top: 10px;">A New Era of Payment</p>
+    </main>
+
+    <canvas id="binaryCanvas"></canvas>
+    <canvas id="raysCanvas"></canvas>
+    <canvas id="neuronsCanvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -3;"></canvas>
+
+    <footer>&copy; 2025 AigisPay. All rights reserved.</footer>
+
+    <script>
+        // Binary code rain effect on canvas
+        const binaryCanvas = document.getElementById('binaryCanvas');
+        const binaryCtx = binaryCanvas.getContext('2d');
+        let width, height;
+        let columns;
+        let drops;
+        const binaryChars = ['0', '1'];
+
+        // Rays effect canvas
+        const raysCanvas = document.getElementById('raysCanvas');
+        const raysCtx = raysCanvas.getContext('2d');
+
+        // Neurons effect canvas
+        const neuronsCanvas = document.getElementById('neuronsCanvas');
+        const neuronsCtx = neuronsCanvas.getContext('2d');
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            binaryCanvas.width = width;
+            binaryCanvas.height = height;
+            raysCanvas.width = width;
+            raysCanvas.height = height;
+            neuronsCanvas.width = width;
+            neuronsCanvas.height = height;
+            columns = Math.floor(width / 20);
+            drops = Array(columns).fill(height + 10); // start drops from bottom + 10
+        }
+
+        function drawBinary() {
+            binaryCtx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+            binaryCtx.fillRect(0, 0, width, height);
+
+            binaryCtx.fillStyle = 'rgba(0, 127, 102, 0.12)';
+            binaryCtx.font = '20px monospace';
+
+            for (let i = 0; i < columns; i++) {
+                const char = binaryChars[Math.floor(Math.random() * binaryChars.length)];
+                binaryCtx.fillText(char, i * 20, drops[i] * 20);
+
+                // Flow upwards
+                if (drops[i] * 20 < 0 && Math.random() > 0.995) {
+                    drops[i] = height / 20 + 10;
+                }
+
+                drops[i]--;
+            }
+
+            // Random flickering code fields
+            for (let j = 0; j < 50; j++) {
+                const x = Math.random() * width;
+                const y = Math.random() * height;
+                const text = ['quantum', 'neural', 'network', 'AI', 'blockchain', 'crypto', 'node', 'data'][Math.floor(Math.random() * 8)];
+                binaryCtx.fillStyle = `rgba(0, 127, 102, ${Math.random() * 0.15})`;
+                binaryCtx.font = `${10 + Math.random() * 10}px monospace`;
+                binaryCtx.fillText(text, x, y);
+            }
+        }
+
+        // Rays animation
+        let rays = [];
+
+        function createRay() {
+            return {
+                x: Math.random() * width,
+                y: Math.random() * height,
+                length: 100 + Math.random() * 150,
+                baseY: 0,
+                amplitude: 20 + Math.random() * 30,
+                frequency: 0.005 + Math.random() * 0.01,
+                phase: Math.random() * 2 * Math.PI,
+                speed: 0.01 + Math.random() * 0.02,
+                opacity: 0.1 + Math.random() * 0.15
+            };
+        }
+
+        function drawRays() {
+            raysCtx.clearRect(0, 0, width, height);
+            raysCtx.lineWidth = 2;
+            raysCtx.strokeStyle = 'rgba(0, 127, 102, 0.15)';
+
+            rays.forEach(ray => {
+                raysCtx.beginPath();
+                for (let i = 0; i < ray.length; i++) {
+                    const x = ray.x + i;
+                    const y = ray.y + ray.amplitude * Math.sin(ray.frequency * i + ray.phase);
+                    if (i === 0) {
+                        raysCtx.moveTo(x, y);
+                    } else {
+                        raysCtx.lineTo(x, y);
+                    }
+                }
+                raysCtx.stroke();
+                ray.phase += ray.speed;
+            });
+        }
+
+        // Neurons effect
+        let neurons = [];
+
+        function createNeuron() {
+            return {
+                x: Math.random() * width,
+                y: Math.random() * height,
+                radius: 2 + Math.random() * 3,
+                opacity: 0.1 + Math.random() * 0.3,
+                flickerSpeed: 0.01 + Math.random() * 0.03,
+                flickerPhase: Math.random() * 2 * Math.PI,
+                connections: []
+            };
+        }
+
+        function connectNeurons() {
+            neurons.forEach(neuron => {
+                neuron.connections = neurons.filter(other => {
+                    if (other === neuron) return false;
+                    const dx = neuron.x - other.x;
+                    const dy = neuron.y - other.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    return dist < 150;
+                });
+            });
+        }
+
+        function drawNeurons() {
+            neuronsCtx.clearRect(0, 0, width, height);
+
+            neurons.forEach(neuron => {
+                neuron.opacity = 0.5 + 0.5 * Math.sin(neuron.flickerPhase);
+                neuron.flickerPhase += neuron.flickerSpeed;
+
+                neuronsCtx.beginPath();
+                neuronsCtx.arc(neuron.x, neuron.y, neuron.radius, 0, Math.PI * 2);
+                neuronsCtx.fillStyle = `rgba(0, 255, 200, ${neuron.opacity})`;
+                neuronsCtx.fill();
+
+                neuron.connections.forEach(conn => {
+                    neuronsCtx.beginPath();
+                    neuronsCtx.moveTo(neuron.x, neuron.y);
+                    neuronsCtx.lineTo(conn.x, conn.y);
+                    neuronsCtx.strokeStyle = `rgba(0, 255, 200, ${neuron.opacity * 0.2})`;
+                    neuronsCtx.lineWidth = 1;
+                    neuronsCtx.stroke();
+                });
+            });
+        }
+
+        function animate() {
+            drawBinary();
+            drawRays();
+            drawNeurons();
+            requestAnimationFrame(animate);
+        }
+
+        function init() {
+            resize();
+            rays = [];
+            neurons = [];
+            for (let i = 0; i < 30; i++) {
+                rays.push(createRay());
+            }
+            for (let i = 0; i < 50; i++) {
+                neurons.push(createNeuron());
+            }
+            connectNeurons();
+            animate();
+        }
+
+        window.addEventListener('resize', resize);
+        window.onload = init;
+    </script>
+</body>
+</html>
