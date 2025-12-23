@@ -115,7 +115,7 @@
             text-align: left;
             z-index: 10;
             position: relative;
-            text-shadow: 0 8px 22px rgba(0, 0, 0, 0.7), 0 0 18px rgba(0, 200, 133, 0.18);
+            text-shadow: 0 8px 22px rgba(0, 0, 0, 0.7), 0 0 12px rgba(0, 200, 133, 0.12);
             letter-spacing: -0.02em;
             line-height: 1.15;
             margin: 0 0 12px;
@@ -151,14 +151,17 @@
         main.hero::before {
             content: '';
             position: absolute;
-            width: 140%;
-            height: 160%;
+            width: 150%;
+            height: 155%;
             max-width: 1200px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 50% 35%, rgba(1, 75, 40, 0.75), rgba(1, 15, 10, 0));
-            filter: blur(30px);
-            opacity: 0.75;
+            border-radius: 999px;
+            top: -12%;
+            left: -22%;
+            background: radial-gradient(ellipse 62% 48% at 45% 35%, rgba(0, 215, 176, 0.22) 0%, rgba(1, 75, 40, 0.72) 18%, rgba(1, 35, 22, 0.30) 44%, rgba(1, 15, 10, 0) 76%);
+            filter: blur(22px);
+            opacity: 0.42;
             z-index: -1;
+            pointer-events: none;
         }
 
         footer {
@@ -312,6 +315,19 @@
             z-index: -2;
             mix-blend-mode: screen;
             opacity: 0.9;
+            isolation: isolate;
+        }
+
+        #binaryLayer::before {
+            content: '';
+            position: absolute;
+            inset: -18% -22% -18% -22%;
+            border-radius: 999px;
+            background: radial-gradient(ellipse 62% 48% at 55% 30%, rgba(0, 215, 176, 0.32) 0%, rgba(1, 75, 40, 0.78) 20%, rgba(1, 35, 22, 0.28) 46%, rgba(1, 15, 10, 0) 76%);
+            filter: blur(18px);
+            opacity: 0.95;
+            z-index: -1;
+            pointer-events: none;
         }
 
         .stream-column {
