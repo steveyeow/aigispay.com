@@ -370,8 +370,14 @@
 
         /* prevent the first headline line from breaking into multiple lines */
         .no-break {
-            display: block;
+            display: inline-block;
             white-space: nowrap;
+            vertical-align: middle;
+        }
+
+        /* helper for the second line of the hero headline */
+        .hero-line {
+            display: block;
         }
         
         /* Split-screen layout: left content column, right visuals column */
@@ -459,7 +465,7 @@
     <div class="page-split">
         <div class="left-column">
             <main class="hero">
-                <h2>The Open Trust Layer<br>for P2P Commerce</h2>
+                <h2><span class="no-break">The Open Trust Layer</span><span class="hero-line">for P2P Commerce</span></h2>
                 <div class="main-description">
                     <span>Built programmable trust for individuals to go global</span>
                     <span>in the human–AI symbiotic era.</span>
