@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AigisPay - The Open Payment Trust Layer for P2P Trade</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600&display=swap');
+    /* Y Combinator body font: DM Sans for UI/body (headlines remain a strong sans) */
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600&display=swap');
         :root {
             --accent-green: #00d7b0;
             --accent-green-soft: #5fffdc;
@@ -22,8 +24,9 @@
         }
         body {
             margin: 0;
-            /* typography: use a humanist sans for body and a clean display for headings */
-            font-family: 'Sora', 'Space Grotesk', 'Inter', system-ui, -apple-system, sans-serif;
+            /* typography: use a clean, neutral sans for all non-hero text */
+            /* match YC: DM Sans for UI/body, fallback to system sans */
+            font-family: 'DM Sans', 'Inter', system-ui, -apple-system, sans-serif;
             /* forced pure black background */
             background: #000 !important;
             color: var(--text-primary);
@@ -56,15 +59,15 @@
             pointer-events: none;
         }
 
-        header {
+    header {
             position: absolute;
             top: 20px;
             left: 20px;
             font-weight: 600;
             font-size: 1.1rem;
             color: var(--text-primary);
-            /* use a clean display face for the logo */
-            font-family: 'Space Grotesk', 'Avenir', 'Avenir Next', system-ui, -apple-system, sans-serif;
+        /* use a strong sans for logo/headline (match YC's sans display) */
+        font-family: 'DM Sans', 'Inter', 'Space Grotesk', system-ui, -apple-system, sans-serif;
             z-index: 10;
             text-align: left;
             letter-spacing: 0.4px;
@@ -72,8 +75,8 @@
         }
 
         main h2 {
-            /* display heading: use Inter/Space Grotesk for a strong, modern display */
-            font-family: 'Inter', 'Space Grotesk', 'Sora', system-ui, -apple-system, sans-serif;
+            /* display heading: use a strong sans (DM Sans / Inter) like YC */
+            font-family: 'DM Sans', 'Inter', 'Space Grotesk', system-ui, -apple-system, sans-serif;
             font-weight: 700;
             /* keep it large and prominent */
             font-size: clamp(2rem, 4.2vw, 3.6rem);
@@ -141,7 +144,8 @@
 
         .main-description {
             color: #dff9ef;
-            font-family: 'Sora', 'Space Grotesk', system-ui, -apple-system, sans-serif;
+            /* body copy: DM Sans (match YC) */
+            font-family: 'DM Sans', 'Inter', system-ui, -apple-system, sans-serif;
             font-weight: 400;
             font-size: 1.06rem;
             margin: 0 0 6px 0;
@@ -159,7 +163,8 @@
 
         .secondary-tagline {
             color: rgba(230,255,245,0.95);
-            font-family: 'JetBrains Mono', 'Space Grotesk', monospace;
+            /* use DM Sans for tagline text to match YC body style */
+            font-family: 'DM Sans', 'Inter', system-ui, -apple-system, sans-serif;
             font-weight: 600;
             font-size: 0.95rem;
             margin: 12px auto 0;
@@ -335,12 +340,15 @@
             z-index: 6;
             position: relative;
             padding: 6px 0;
-            font-family: 'Sora', 'Space Grotesk', system-ui, -apple-system, sans-serif;
+            /* match YC: use DM Sans for content sections */
+            font-family: 'DM Sans', 'Sora', 'Space Grotesk', system-ui, -apple-system, sans-serif;
             color: var(--text-primary);
         }
 
         .section-title {
-            font-weight: 700;
+            /* section headings: use the sans display (DM Sans) */
+            font-family: 'DM Sans', 'Inter', system-ui, -apple-system, sans-serif;
+            font-weight: 600;
             font-size: clamp(1.15rem, 2.2vw, 1.5rem);
             margin: 0 0 10px 0;
             line-height: 1.15;
@@ -349,6 +357,8 @@
         }
 
         .section-paragraph {
+            /* body copy: DM Sans */
+            font-family: 'DM Sans', 'Inter', system-ui, -apple-system, sans-serif;
             font-weight: 400;
             font-size: 1.02rem;
             color: #dff9ef;
@@ -458,8 +468,8 @@
         }
     </style>
 </head>
-<body style="background: #000 !important; background-image: none !important; background-color: #000 !important; font-family: 'Space Grotesk', 'Sora', 'Inter', system-ui, -apple-system, sans-serif !important; color: var(--text-primary) !important;">
-    <header style="font-family: 'Sora', 'Inter', 'Avenir Next', system-ui, -apple-system, sans-serif; font-weight: 700; letter-spacing: 1px; color: var(--text-primary);">
+<body style="background: #000 !important; background-image: none !important; background-color: #000 !important; font-family: 'DM Sans', 'Inter', system-ui, -apple-system, sans-serif !important; color: var(--text-primary) !important;">
+    <header style="font-family: 'DM Sans', 'Inter', system-ui, -apple-system, sans-serif; font-weight: 700; letter-spacing: 1px; color: var(--text-primary);">
         AigisPay
     </header>
     <div class="page-split">
@@ -504,7 +514,7 @@
         </div>
     </div>
 
-    <footer style="font-family: 'JetBrains Mono', 'Fira Code', 'Space Mono', 'Space Grotesk', 'Sora', system-ui, -apple-system, monospace; color: var(--text-primary);">&copy; 2025 Aigis Labs. All rights reserved.</footer>
+    <footer style="font-family: 'DM Sans', 'Inter', system-ui, -apple-system, sans-serif; color: var(--text-primary);">&copy; 2025 Aigis Labs. All rights reserved.</footer>
     <script>
         const binaryLayer = document.getElementById('binaryLayer');
         const flashLayer = document.getElementById('flashLayer');
