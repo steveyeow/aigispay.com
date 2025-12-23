@@ -164,12 +164,52 @@
         footer {
             position: absolute;
             bottom: 10px;
-            font-size: 0.875rem;
-            color: rgba(200, 255, 205, 0.6);
-            font-weight: 600;
+            left: 20px;
             z-index: 10;
-            /* match page font stack */
-            font-family: 'JetBrains Mono', 'Fira Code', 'Space Mono', 'Space Grotesk', 'Sora', system-ui, -apple-system, monospace;
+            font-size: 0.875rem !important;
+            width: auto !important;
+            margin: 0 !important;
+            text-align: left !important;
+        }
+
+        .footer-contact {
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            z-index: 10;
+            cursor: pointer;
+            user-select: none;
+            font-size: 0.875rem !important;
+            width: auto !important;
+            margin: 0 !important;
+            text-align: right !important;
+        }
+
+        .footer-contact:hover,
+        .footer-contact:focus-visible {
+            outline: none;
+        }
+
+        .contact-toast {
+            position: fixed;
+            bottom: 80px;
+            right: 32px;
+            background: rgba(0, 0, 0, 0.8);
+            color: var(--text-primary);
+            padding: 0.65rem 1rem;
+            border-radius: 999px;
+            border: 1px solid rgba(95, 255, 220, 0.35);
+            font-size: 0.78rem;
+            font-family: var(--font-mono);
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .contact-toast.is-visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .main-description {
@@ -548,6 +588,8 @@
     </div>
 
     <footer style="font-family: var(--font-display); color: var(--text-primary); display: block; width: 100%; text-align: center; margin: 40px auto;">&copy; 2025 Aigis Labs. All rights reserved.</footer>
+    <div class="footer-contact" id="contactUsButton" role="button" tabindex="0" style="font-family: var(--font-display); color: var(--text-primary); display: block; width: 100%; text-align: center; margin: 40px auto;">Contact Us</div>
+    <div class="contact-toast" id="contactToast" role="status" aria-live="polite">Email copied: sequoiayao@gmail.com</div>
     <script>
         const binaryLayer = document.getElementById('binaryLayer');
         const flashLayer = document.getElementById('flashLayer');
@@ -733,6 +775,33 @@
             requestAnimationFrame(updateNetworkScene);
         }
 
+        function showContactToast() {
+            const toast = document.getElementById('contactToast');
+            if (!toast) return;
+            toast.classList.add('is-visible');
+            clearTimeout(showContactToast.timeoutId);
+            showContactToast.timeoutId = setTimeout(() => {
+                toast.classList.remove('is-visible');
+            }, 2400);
+        }
+
+        async function handleContactClick() {
+            const email = 'sequoiayao@gmail.com';
+            try {
+                await navigator.clipboard.writeText(email);
+                showContactToast();
+            } catch (err) {
+                window.location.href = `mailto:${email}`;
+            }
+        }
+
+        function handleContactKeydown(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                handleContactClick();
+            }
+        }
+
         function handleResize() {
             buildStreams();
             resizeNetworkCanvas();
@@ -744,6 +813,9 @@
             handleResize();
             startFlashLoop();
             updateNetworkScene();
+            const contactButton = document.getElementById('contactUsButton');
+            contactButton?.addEventListener('click', handleContactClick);
+            contactButton?.addEventListener('keydown', handleContactKeydown);
         });
     </script>
 </body>
