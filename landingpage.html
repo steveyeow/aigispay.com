@@ -22,20 +22,17 @@
         }
         body {
             margin: 0;
-            /* unify fonts to the 'Our mission' stack (monospace-forward) */
-            font-family: 'JetBrains Mono', 'Fira Code', 'Space Mono', 'Space Grotesk', 'Sora', system-ui, -apple-system, monospace;
+            /* typography: use a humanist sans for body and a clean display for headings */
+            font-family: 'Sora', 'Space Grotesk', 'Inter', system-ui, -apple-system, sans-serif;
             /* forced pure black background */
             background: #000 !important;
             color: var(--text-primary);
             min-height: 100vh;
-            text-align: center;
+            text-align: left;
             padding: 0 20px;
             position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            overflow-x: hidden;
+            display: block; /* restore normal document flow so page can scroll */
             text-shadow: 0 0 6px rgba(0, 0, 0, 0.25);
         }
 
@@ -75,40 +72,46 @@
         }
 
         main h2 {
-            /* use same font as 'Our mission' */
-            font-family: 'JetBrains Mono', 'Fira Code', 'Space Mono', 'Space Grotesk', 'Sora', system-ui, -apple-system, monospace;
+            /* display heading: use Inter/Space Grotesk for a strong, modern display */
+            font-family: 'Inter', 'Space Grotesk', 'Sora', system-ui, -apple-system, sans-serif;
             font-weight: 700;
-            /* keep it large but allow scaling so it fits one line */
-            font-size: clamp(1.6rem, 3.2vw, 2.8rem);
+            /* keep it large and prominent */
+            font-size: clamp(2rem, 4.2vw, 3.6rem);
             color: var(--text-primary);
-            text-align: center;
+            /* left-align headline in the left content area */
+            text-align: left;
             z-index: 10;
             position: relative;
             text-shadow: 0 8px 22px rgba(0, 0, 0, 0.7), 0 0 18px rgba(0, 200, 133, 0.18);
-            letter-spacing: -0.2px;
-            line-height: 1;
-            margin: 0 auto 6px;
+            letter-spacing: -0.6px;
+            line-height: 1.02;
+            margin: 0 0 12px;
             display: block;
-            /* ensure heading stays on one line */
-            white-space: nowrap;
+            /* allow wrapping and ensure true left alignment */
+            white-space: normal;
             overflow: visible;
             text-overflow: clip;
-            max-width: 100%;
+            max-width: 1100px; /* match description max width for consistent left edge */
         }
 
         main.hero {
             padding: 8px 22px 40px;
             width: 100%;
-            max-width: 980px;
+            max-width: 1100px;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            /* vertically center but align content to the left area */
+            align-items: flex-start;
+            /* override body centering so this hero block can sit left */
+            align-self: flex-start;
             justify-content: center;
-            text-align: center;
+            text-align: left;
             gap: 14px;
             position: relative;
             z-index: 5;
-            margin: 0 auto;
+            margin: 0;
+            /* rely on the left-column padding to create the left gutter */
+            padding-left: 0;
             flex: 1;
         }
 
@@ -138,16 +141,15 @@
 
         .main-description {
             color: #dff9ef;
-            /* unify with mission font */
-            font-family: 'JetBrains Mono', 'Fira Code', 'Space Mono', 'Space Grotesk', 'Sora', system-ui, -apple-system, monospace;
+            font-family: 'Sora', 'Space Grotesk', system-ui, -apple-system, sans-serif;
             font-weight: 400;
-            font-size: 1.02rem;
-            margin: 0 auto 6px;
-            max-width: 820px;
-            line-height: 1.95; /* increased for looser reading */
-            letter-spacing: 0.18px;
-            text-align: center;
-            padding: 8px 12px;
+            font-size: 1.06rem;
+            margin: 0 0 6px 0;
+            max-width: 1100px;
+            line-height: 1.8; /* comfortable for reading */
+            letter-spacing: 0.2px;
+            text-align: left;
+            padding: 6px 0 0 0;
         }
 
         .main-description span {
@@ -181,6 +183,31 @@
             main.hero {
                 width: 100%;
                 max-width: 100%;
+            }
+
+            /* stack columns on small screens */
+            .page-split {
+                display: block;
+            }
+
+            .left-column, .right-column {
+                width: 100%;
+                flex: none;
+                min-width: 0;
+                padding-left: 20px;
+                padding-right: 20px;
+                margin-right: 0; /* remove right-column offset on mobile */
+            }
+
+            .right-column {
+                position: relative;
+                height: auto;
+            }
+
+            #binaryLayer, #networkCanvas {
+                position: relative;
+                width: 100%;
+                height: 260px;
             }
 
         }
@@ -297,28 +324,179 @@
             }
         }
         /* Additional styles for cool flowing rays */
+        /* New content section styles: ensure all text is left-aligned and constrained to the left column */
+        .content-section {
+            max-width: 1100px;
+            margin-left: 6vw;
+            margin-right: auto;
+            margin-top: 28px;
+            margin-bottom: 18px;
+            text-align: left;
+            z-index: 6;
+            position: relative;
+            padding: 6px 0;
+            font-family: 'Sora', 'Space Grotesk', system-ui, -apple-system, sans-serif;
+            color: var(--text-primary);
+        }
+
+        .section-title {
+            font-weight: 700;
+            font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+            margin: 0 0 10px 0;
+            line-height: 1.15;
+            text-align: left;
+            letter-spacing: -0.2px;
+        }
+
+        .section-paragraph {
+            font-weight: 400;
+            font-size: 1.02rem;
+            color: #dff9ef;
+            line-height: 1.8;
+            margin: 0 0 10px 0;
+            text-align: left;
+        }
+
+        .feature-list {
+            margin: 8px 0 0 0;
+            padding-left: 20px;
+            color: #dff9ef;
+            line-height: 1.7;
+        }
+
+        .feature-list li {
+            margin-bottom: 8px;
+        }
+
+        /* prevent the first headline line from breaking into multiple lines */
+        .no-break {
+            display: block;
+            white-space: nowrap;
+        }
+        
+        /* Split-screen layout: left content column, right visuals column */
+        .page-split {
+            display: flex;
+            width: 100%;
+            align-items: stretch;
+            justify-content: flex-start;
+        }
+
+        .left-column {
+            flex: 1 1 auto; /* main content column */
+            display: block;
+            padding: 48px 6vw;
+            box-sizing: border-box;
+            z-index: 5;
+            margin-right: 0; /* allow content to flow full width so sections stack vertically */
+        }
+
+        .right-column {
+            width: 100%;
+            min-width: 0;
+            position: relative; /* make visuals flow with the page (not fixed)
+                                   so each section scrolls normally */
+            height: auto;
+            overflow: hidden;
+            z-index: 1;
+            display: block;
+        }
+
+        /* constrain visuals to the right column instead of full viewport */
+        #networkCanvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            mix-blend-mode: screen;
+            opacity: 0.92;
+        }
+
+        #binaryLayer {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: -2;
+            mix-blend-mode: screen;
+            opacity: 0.9;
+        }
+
+        /* Make each major block occupy a full viewport height so the page can scroll per-section */
+        main.hero, .content-section {
+            min-height: 100vh;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-top: 48px;
+            padding-bottom: 48px;
+        }
+
+        /* scroll snap for nicer one-screen-per-section behavior */
+        html, body {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            scroll-snap-type: y mandatory;
+        }
+
+        main.hero, .content-section {
+            scroll-snap-align: start;
+        }
     </style>
 </head>
 <body style="background: #000 !important; background-image: none !important; background-color: #000 !important; font-family: 'Space Grotesk', 'Sora', 'Inter', system-ui, -apple-system, sans-serif !important; color: var(--text-primary) !important;">
     <header style="font-family: 'Sora', 'Inter', 'Avenir Next', system-ui, -apple-system, sans-serif; font-weight: 700; letter-spacing: 1px; color: var(--text-primary);">
         AigisPay
     </header>
-    <main class="hero">
-    <h2>The Open Trust Layer for P2P Commerce</h2>
-        <div class="main-description">
-            <span>Smart-contract and agent-based conditional settlement,</span>
-            <span>portable, user-owned, cumulative reputation identities,</span>
-            <span>AI-based dispute resolution, fiat–stablecoin interop and more—</span>
-            <span>powering the new wave of P2P economy in the human–AI symbiotic era.</span>
-        </div>
-    <!--
-    <p class="secondary-tagline"><strong>Our mission：</strong> Build AI-first decentralized commerce for global individuals.<br><strong>Our value：</strong> Trust</p>
-    -->
-    </main>
+    <div class="page-split">
+        <div class="left-column">
+            <main class="hero">
+                <h2>The Open Trust Layer<br>for P2P Commerce</h2>
+                <div class="main-description">
+                    <span>Built programmable trust for individuals to go global</span>
+                    <span>in the human–AI symbiotic era.</span>
+                </div>
+            </main>
 
-    <canvas id="networkCanvas"></canvas>
-    <div id="binaryLayer"></div>
-    <div id="flashLayer"></div>
+            <section class="content-section" id="section-2">
+                <h3 class="section-title">The P2P economy is booming, but legacy payments fail individuals.</h3>
+                <p class="section-paragraph">The pandemic made digital nomadism a global norm. AI is now accelerating this by amplifying individual capability and creativity.</p>
+                <p class="section-paragraph">Traditional payment rails were built for platforms or simple transfers. They move money, not trust.</p>
+                <p class="section-paragraph">User reputation is locked within platforms. This lack of portable trust stifles the full potential of the P2P economy.</p>
+            </section>
+
+            <section class="content-section" id="section-3">
+                <h3 class="section-title">Purpose-built for individuals</h3>
+                <p class="section-paragraph">AigisPay is a new trust and settlement layer for the P2P economy:</p>
+                <ul class="feature-list">
+                    <li><strong>Conditional Settlements:</strong> We enable agent- and smart-contract–based payments that make transactions fast, cheap, and safe.</li>
+                    <li><strong>User-Owned Reputation:</strong> We build portable and cumulative reputation identities synced with payment agents to create a frictionless trading environment, especially for emerging markets.</li>
+                    <li><strong>AI Dispute Resolution:</strong> Automated and fair resolution mechanisms designed for decentralized P2P commerce.</li>
+                    <li><strong>Fiat-Stablecoin Interoperability:</strong> Seamless conversion and interaction between traditional currency and stablecoins.</li>
+                </ul>
+            </section>
+
+            <section class="content-section" id="section-4">
+                <h3 class="section-title">Mission</h3>
+                <p class="section-paragraph">Aigis Labs is on a mission to build a decentralized economy for the rest of us, bringing the best product design and technology to empower all individuals.</p>
+                <p class="section-paragraph">We are serial founders from YC, Amazon, and Google with deep experience in marketplaces and consumer products across AI and crypto, and a genuine obsession with understanding and serving individual users.</p>
+            </section>
+        </div>
+
+        <div class="right-column" aria-hidden="true">
+            <canvas id="networkCanvas"></canvas>
+            <div id="binaryLayer"></div>
+            <div id="flashLayer"></div>
+        </div>
+    </div>
 
     <footer style="font-family: 'JetBrains Mono', 'Fira Code', 'Space Mono', 'Space Grotesk', 'Sora', system-ui, -apple-system, monospace; color: var(--text-primary);">&copy; 2025 Aigis Labs. All rights reserved.</footer>
     <script>
@@ -432,8 +610,10 @@
 
         function resizeNetworkCanvas() {
             if (!networkCanvas) return;
-            networkCanvas.width = window.innerWidth;
-            networkCanvas.height = window.innerHeight;
+            const container = document.querySelector('.right-column') || document.body;
+            // size the canvas to the right-column visuals area
+            networkCanvas.width = Math.max(1, container.clientWidth);
+            networkCanvas.height = Math.max(1, container.clientHeight);
         }
 
         function createNode() {
@@ -451,8 +631,9 @@
 
         function rebuildNetworkNodes() {
             if (!networkCanvas) return;
-            // further reduce node count to make the dot matrix sparser
-            const count = window.innerWidth < 768 ? 10 : 18;
+            const container = document.querySelector('.right-column') || document.body;
+            // further reduce node count to make the dot matrix sparser; base on visuals width
+            const count = (container.clientWidth && container.clientWidth < 768) ? 10 : 18;
             networkNodes = Array.from({ length: count }, createNode);
         }
 
