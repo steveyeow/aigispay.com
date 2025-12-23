@@ -22,24 +22,76 @@
             /* theme bases */
             --bg-starblue: #020612; /* deep starry 'midnight' (near-black, blue tint) */
             --bg-stargray: #0b0b10; /* alternative starry gray */
+            --bg-primary: #000;
             --text-primary: #e6fff7;
+            --text-secondary: #dff9ef;
             --muted: rgba(200,255,220,0.18);
         }
+
+        body[data-theme="light"] {
+            --bg-primary: #F2F2F7;
+            --text-primary: #1c1c1e;
+            --text-secondary: #3a3a3c;
+        }
+
+        body[data-theme="light"],
+        body[data-theme="light"] * {
+            text-shadow: none !important;
+        }
+
+        body[data-theme="light"] main.hero::before {
+            opacity: 0.48 !important;
+            background: radial-gradient(ellipse 60% 48% at 45% 32%, rgba(255, 135, 0, 0.28) 0%, rgba(255, 94, 188, 0.24) 26%, rgba(74, 144, 226, 0.20) 52%, rgba(120, 255, 214, 0.12) 70%, rgba(255, 255, 255, 0) 86%);
+            filter: blur(22px);
+        }
+
+        body[data-theme="light"] #binaryLayer::before {
+            opacity: 0.42 !important;
+            background: radial-gradient(ellipse 58% 46% at 55% 28%, rgba(255, 135, 0, 0.26) 0%, rgba(255, 94, 188, 0.22) 30%, rgba(74, 144, 226, 0.18) 55%, rgba(120, 255, 214, 0.12) 78%, rgba(255, 255, 255, 0) 90%);
+            filter: blur(20px);
+        }
+
+        body[data-theme="light"] .stream-column {
+            filter: none !important;
+            opacity: 0.16;
+            mix-blend-mode: screen;
+        }
+
+        body[data-theme="light"] .stream-line {
+            color: rgba(28, 28, 30, 0.26);
+            text-shadow: none !important;
+        }
+
+        body[data-theme="light"] #networkCanvas {
+            mix-blend-mode: screen;
+            opacity: 0.42;
+        }
+
+        body[data-theme="light"] .flash-text {
+            text-shadow: none !important;
+            filter: none !important;
+            opacity: 0.35;
+        }
+
         body {
             margin: 0;
             /* typography: use a clean, neutral sans for all non-hero text */
             /* match YC: DM Sans for UI/body, fallback to system sans */
             font-family: var(--font-sans);
             /* forced pure black background */
-            background: #000 !important;
+            background: var(--bg-primary) !important;
             color: var(--text-primary);
             min-height: 100vh;
             text-align: left;
-            padding: 0 20px;
+            padding: 0 0 0 20px;
             position: relative;
             overflow-x: hidden;
             display: block; /* restore normal document flow so page can scroll */
             text-shadow: 0 0 6px rgba(0, 0, 0, 0.25);
+        }
+
+        body[data-theme="light"] {
+            text-shadow: none;
         }
 
         body::before {
@@ -80,11 +132,56 @@
             gap: 0.65rem;
             padding: 0.4rem 0.75rem;
             border-radius: 999px;
-            background: rgba(0, 0, 0, 0.35);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(12px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-            text-shadow: 0 0 18px rgba(0, 200, 133, 0.25);
+            background: transparent;
+            border: none;
+            backdrop-filter: none;
+            box-shadow: none;
+            text-shadow: none;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 18px;
+            right: 18px;
+            bottom: auto;
+            z-index: 20;
+            width: 38px;
+            height: 18px;
+            padding: 0;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.32);
+            background: transparent;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .theme-toggle:focus-visible {
+            outline: 2px solid rgba(0, 215, 176, 0.55);
+            outline-offset: 3px;
+        }
+
+        .theme-toggle::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 3px;
+            width: 12px;
+            height: 12px;
+            border-radius: 999px;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.92);
+            transition: left 0.18s ease, background 0.18s ease;
+        }
+
+        body[data-theme="light"] .theme-toggle {
+            border: 1px solid rgba(0, 0, 0, 0.24);
+            background: transparent;
+        }
+
+        body[data-theme="light"] .theme-toggle::before {
+            left: 23px;
+            background: rgba(28, 28, 30, 0.92);
         }
 
         header .logo-core {
@@ -159,7 +256,7 @@
             left: -22%;
             background: radial-gradient(ellipse 62% 48% at 45% 35%, rgba(0, 215, 176, 0.22) 0%, rgba(1, 75, 40, 0.72) 18%, rgba(1, 35, 22, 0.30) 44%, rgba(1, 15, 10, 0) 76%);
             filter: blur(22px);
-            opacity: 0.42;
+            opacity: 0.5;
             z-index: -1;
             pointer-events: none;
         }
@@ -216,7 +313,7 @@
         }
 
         .main-description {
-            color: #dff9ef;
+            color: var(--text-secondary);
             /* body copy: DM Sans (match YC) */
             font-family: var(--font-display);
             font-weight: 300;
@@ -235,7 +332,7 @@
         }
 
         .secondary-tagline {
-            color: rgba(230,255,245,0.95);
+            color: rgba(28, 28, 30, 0.88);
             /* use DM Sans for tagline text to match YC body style */
             font-family: var(--font-sans);
             font-weight: 500;
@@ -266,6 +363,7 @@
             /* stack columns on small screens */
             .page-split {
                 display: block;
+                margin-right: 0;
             }
 
             .left-column, .right-column {
@@ -273,7 +371,7 @@
                 flex: none;
                 min-width: 0;
                 padding-left: 20px;
-                padding-right: 20px;
+                padding-right: 0;
                 margin-right: 0; /* remove right-column offset on mobile */
             }
 
@@ -449,7 +547,7 @@
             font-family: var(--font-display);
             font-weight: 400;
             font-size: 1.02rem;
-            color: #dff9ef;
+            color: var(--text-secondary);
             line-height: 1.8;
             margin: 0 0 10px 0;
             text-align: left;
@@ -458,7 +556,7 @@
         .feature-list {
             margin: 8px 0 0 0;
             padding-left: 20px;
-            color: #dff9ef;
+            color: var(--text-secondary);
             line-height: 1.7;
             font-family: var(--font-display);
         }
@@ -485,6 +583,7 @@
             width: 100%;
             align-items: stretch;
             justify-content: flex-start;
+            margin-right: -20px;
         }
 
         .left-column {
@@ -557,7 +656,7 @@
         }
     </style>
 </head>
-<body style="background: #000 !important; background-image: none !important; background-color: #000 !important; font-family: Inter, system-ui, -apple-system, sans-serif !important; color: var(--text-primary) !important;">
+<body data-theme="dark" style="background-image: none !important; font-family: Inter, system-ui, -apple-system, sans-serif !important;">
     <header style="font-family: var(--font-display); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-primary); font-size: 1.4rem; text-decoration: none;">
         AigisPay
     </header>
@@ -606,6 +705,7 @@
     <footer style="font-family: var(--font-display); color: var(--text-primary); display: block; width: 100%; text-align: center; margin: 40px auto;">&copy; 2025 Aigis Labs. All rights reserved.</footer>
     <div class="footer-contact" id="contactUsButton" role="button" tabindex="0" style="font-family: var(--font-display); color: var(--text-primary); display: block; width: 100%; text-align: center; margin: 40px auto;">Contact Us</div>
     <div class="contact-toast" id="contactToast" role="status" aria-live="polite">Email copied: sequoiayao@gmail.com</div>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme" aria-pressed="false"></button>
     <script>
         const binaryLayer = document.getElementById('binaryLayer');
         const flashLayer = document.getElementById('flashLayer');
@@ -750,6 +850,12 @@
             const height = networkCanvas.height;
             networkCtx.clearRect(0, 0, width, height);
 
+            const theme = document.body.getAttribute('data-theme') || 'dark';
+            const isLight = theme === 'light';
+            const linkBase = isLight ? 0.10 : 0.08;
+            const nodeBase = isLight ? 0.20 : 0.18;
+            const nodeShadowColor = isLight ? 'rgba(255, 255, 255, 0)' : 'rgba(120, 255, 215, 0.45)';
+
             networkNodes.forEach(node => {
                 node.x += node.vx;
                 node.y += node.vy;
@@ -771,7 +877,12 @@
                         networkCtx.beginPath();
                         networkCtx.moveTo(a.x, a.y);
                         networkCtx.lineTo(b.x, b.y);
-                        networkCtx.strokeStyle = `rgba(140, 255, 215, ${0.08 * strength})`;
+                        if (isLight) {
+                            const hue = (200 + ((a.x + b.y) % 120)) % 360;
+                            networkCtx.strokeStyle = `hsla(${hue}, 85%, 55%, ${linkBase * strength})`;
+                        } else {
+                            networkCtx.strokeStyle = `rgba(140, 255, 215, ${linkBase * strength})`;
+                        }
                         networkCtx.lineWidth = 0.6;
                         networkCtx.stroke();
                     }
@@ -781,9 +892,16 @@
             networkNodes.forEach(node => {
                 networkCtx.beginPath();
                 networkCtx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-                networkCtx.fillStyle = `rgba(140, 255, 215, ${0.18 + node.glow})`;
-                networkCtx.shadowBlur = 8;
-                networkCtx.shadowColor = 'rgba(120, 255, 215, 0.45)';
+                if (isLight) {
+                    const hue = (180 + ((node.x + node.y) % 140)) % 360;
+                    networkCtx.fillStyle = `hsla(${hue}, 92%, 52%, ${nodeBase + node.glow * 0.55})`;
+                    networkCtx.shadowBlur = 0;
+                    networkCtx.shadowColor = nodeShadowColor;
+                } else {
+                    networkCtx.fillStyle = `rgba(140, 255, 215, ${nodeBase + node.glow})`;
+                    networkCtx.shadowBlur = 8;
+                    networkCtx.shadowColor = nodeShadowColor;
+                }
                 networkCtx.fill();
                 networkCtx.shadowBlur = 0;
             });
@@ -826,6 +944,25 @@
 
         window.addEventListener('resize', handleResize);
         window.addEventListener('load', () => {
+            const themeToggle = document.getElementById('themeToggle');
+            const storedTheme = localStorage.getItem('theme');
+            if (storedTheme === 'light' || storedTheme === 'dark') {
+                document.body.setAttribute('data-theme', storedTheme);
+            }
+            if (themeToggle) {
+                const syncToggleA11y = () => {
+                    const isLight = document.body.getAttribute('data-theme') === 'light';
+                    themeToggle.setAttribute('aria-pressed', String(isLight));
+                    themeToggle.setAttribute('title', isLight ? 'Switch to dark' : 'Switch to light');
+                };
+                syncToggleA11y();
+                themeToggle.addEventListener('click', () => {
+                    const nextTheme = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+                    document.body.setAttribute('data-theme', nextTheme);
+                    localStorage.setItem('theme', nextTheme);
+                    syncToggleA11y();
+                });
+            }
             handleResize();
             startFlashLoop();
             updateNetworkScene();
