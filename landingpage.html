@@ -156,6 +156,7 @@
             pointer-events: auto;
             will-change: transform;
             transform: translate3d(0, 0, 0);
+            transition: opacity 0.22s ease, transform 0.22s ease;
         }
 
         .theme-toggle:focus-visible {
@@ -184,6 +185,12 @@
         body[data-theme="light"] .theme-toggle::before {
             left: 23px;
             background: rgba(28, 28, 30, 0.92);
+        }
+
+        .theme-toggle.is-hidden {
+            opacity: 0;
+            transform: translate3d(0, -10px, 0);
+            pointer-events: none;
         }
 
         header .logo-core {
@@ -995,6 +1002,14 @@
                     themeStorage.set(THEME_STORAGE_KEY, nextTheme);
                     syncToggleA11y();
                 });
+                let scrollHideTimeout;
+                const revealToggle = () => themeToggle.classList.remove('is-hidden');
+                const hideWhileScrolling = () => {
+                    themeToggle.classList.add('is-hidden');
+                    clearTimeout(scrollHideTimeout);
+                    scrollHideTimeout = setTimeout(revealToggle, 220);
+                };
+                window.addEventListener('scroll', hideWhileScrolling, { passive: true });
             }
             handleResize();
             startFlashLoop();
