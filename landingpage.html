@@ -143,8 +143,7 @@
             position: fixed;
             top: 18px;
             right: 18px;
-            bottom: auto;
-            z-index: 20;
+            z-index: 2000;
             width: 38px;
             height: 18px;
             padding: 0;
@@ -154,6 +153,9 @@
             cursor: pointer;
             appearance: none;
             -webkit-appearance: none;
+            pointer-events: auto;
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
         }
 
         .theme-toggle:focus-visible {
@@ -660,6 +662,7 @@
     <header style="font-family: var(--font-display); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-primary); font-size: 1.4rem; text-decoration: none;">
         AigisPay
     </header>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme" aria-pressed="false"></button>
     <div class="page-split">
         <div class="left-column">
             <main class="hero">
@@ -705,12 +708,34 @@
     <footer style="font-family: var(--font-display); color: var(--text-primary); display: block; width: 100%; text-align: center; margin: 40px auto;">&copy; 2025 Aigis Labs. All rights reserved.</footer>
     <div class="footer-contact" id="contactUsButton" role="button" tabindex="0" style="font-family: var(--font-display); color: var(--text-primary); display: block; width: 100%; text-align: center; margin: 40px auto;">Contact Us</div>
     <div class="contact-toast" id="contactToast" role="status" aria-live="polite">Email copied: sequoiayao@gmail.com</div>
-    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme" aria-pressed="false"></button>
     <script>
         const binaryLayer = document.getElementById('binaryLayer');
         const flashLayer = document.getElementById('flashLayer');
         const networkCanvas = document.getElementById('networkCanvas');
         const networkCtx = networkCanvas?.getContext('2d');
+        const THEME_STORAGE_KEY = 'theme';
+        const isProductionRuntime = (() => {
+            const hostname = window.location.hostname;
+            if (!hostname || hostname === 'localhost' || hostname === '127.0.0.1') return false;
+            if (hostname.startsWith('192.168.') || hostname.startsWith('10.') || hostname.endsWith('.local')) return false;
+            return true;
+        })();
+        const themeStorage = {
+            get(key) {
+                try {
+                    return localStorage.getItem(key);
+                } catch {
+                    return null;
+                }
+            },
+            set(key, value) {
+                try {
+                    localStorage.setItem(key, value);
+                } catch {
+                    /* no-op if storage is unavailable */
+                }
+            }
+        };
         const basePatterns = [
             '[ SYSTEM_CORE_ACTIVE ]',
             '[ QUANTUM_SYNC_ENABLED ]',
@@ -945,9 +970,17 @@
         window.addEventListener('resize', handleResize);
         window.addEventListener('load', () => {
             const themeToggle = document.getElementById('themeToggle');
-            const storedTheme = localStorage.getItem('theme');
-            if (storedTheme === 'light' || storedTheme === 'dark') {
+            const storedTheme = themeStorage.get(THEME_STORAGE_KEY);
+            if (isProductionRuntime) {
+                document.body.setAttribute('data-theme', 'dark');
+                if (storedTheme !== 'dark') {
+                    themeStorage.set(THEME_STORAGE_KEY, 'dark');
+                }
+            } else if (storedTheme === 'light' || storedTheme === 'dark') {
                 document.body.setAttribute('data-theme', storedTheme);
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                themeStorage.set(THEME_STORAGE_KEY, 'dark');
             }
             if (themeToggle) {
                 const syncToggleA11y = () => {
@@ -959,7 +992,7 @@
                 themeToggle.addEventListener('click', () => {
                     const nextTheme = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
                     document.body.setAttribute('data-theme', nextTheme);
-                    localStorage.setItem('theme', nextTheme);
+                    themeStorage.set(THEME_STORAGE_KEY, nextTheme);
                     syncToggleA11y();
                 });
             }
